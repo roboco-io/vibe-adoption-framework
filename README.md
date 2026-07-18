@@ -4,11 +4,13 @@
 
 ## 문서
 
+**웹사이트**: https://vaf.roboco.io (English) · [/ko/](https://vaf.roboco.io/ko/) (한국어) · [/ja/](https://vaf.roboco.io/ja/) (日本語)
+
 | 문서 | 상태 |
 |---|---|
-| [VAF-ko.md](VAF-ko.md) — 한국어 본문 | 초안 완성 |
-| VAF-en.md — English | 예정 |
-| VAF-ja.md — 日本語 | 예정 |
+| [VAF-en.md](VAF-en.md) — English (default) | 초안 완성 |
+| [VAF-ko.md](VAF-ko.md) — 한국어 | 초안 완성 |
+| [VAF-ja.md](VAF-ja.md) — 日本語 | 초안 완성 |
 
 ## 프레임워크 한눈에 보기
 
