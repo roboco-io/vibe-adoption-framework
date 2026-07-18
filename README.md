@@ -19,7 +19,6 @@
 
 ## 프로젝트 자료
 
-- [ideation.md](ideation.md) — 최초 아이디어 노트
 - [research/aws-caf-overview.md](research/aws-caf-overview.md) — AWS Cloud Adoption Framework 3.0 조사 자료
 - [docs/superpowers/specs/](docs/superpowers/specs/) — 설계 문서
 
