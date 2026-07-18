@@ -6,9 +6,16 @@
 
 | 문서 | 상태 |
 |---|---|
-| [VAF-ko.md](VAF-ko.md) — 한국어 본문 | 작성 중 |
+| [VAF-ko.md](VAF-ko.md) — 한국어 본문 | 초안 완성 |
 | VAF-en.md — English | 예정 |
 | VAF-ja.md — 日本語 | 예정 |
+
+## 프레임워크 한눈에 보기
+
+- **관통 원리 3**: 에이전트=인력 레버리지 · 오너십은 사람 · 인지부채는 관리 대상
+- **관점(Perspective) 6**: Strategy · People & Ownership · Governance & Guardrails · Agent Environment · Knowledge · Harness Engineering (역량 항목 26개)
+- **전환 영역(Domain) 4**: 코드 생산 · 품질 보증 · 지식 · 조직과 역할
+- **도입 여정 4단계**: 준비(Prepare) → 진단(Assess) → 파일럿(Pilot) → 전환(Transform)
 
 ## 프로젝트 자료
 
