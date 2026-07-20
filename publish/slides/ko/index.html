@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VAF 소개 슬라이드 — 로보코</title>
+<meta name="description" content="Vibe Adoption Framework 발표용 슬라이드 (한국어)">
+<link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root {
+  --ink: #161a26; --paper: #f7f8fa; --card: #ffffff;
+  --blue: #1d2a5e; --blue-soft: #eef1f9;
+  --orange: #e8590c; --orange-soft: #fdf0e7;
+  --steel: #6a7382; --line: #dce0e8;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --serif: "Noto Serif KR", serif;
+  --sans: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: var(--sans); color: var(--ink); background: var(--paper); overflow: hidden; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+.deck { height: 100%; position: relative; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  flex-direction: column; justify-content: center;
+  padding: 6vh 8vw; overflow-y: auto;
+}
+.slide.active { display: flex; }
+@media (prefers-reduced-motion: no-preference) {
+  .slide.active { animation: fadein .28s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+
+.eyebrow {
+  font-family: var(--mono); font-size: clamp(11px, 1.3vw, 14px);
+  letter-spacing: .22em; color: var(--orange); text-transform: uppercase; margin-bottom: 2.4vh;
+}
+h1 { font-family: var(--serif); font-weight: 700; font-size: clamp(30px, 5.2vw, 64px); line-height: 1.32; }
+h1 em { font-style: normal; color: var(--blue); }
+h2 { font-family: var(--serif); font-weight: 700; font-size: clamp(24px, 3.4vw, 42px); line-height: 1.35; margin-bottom: 3.6vh; }
+h2 em { font-style: normal; color: var(--orange); }
+.sub { font-size: clamp(15px, 1.7vw, 21px); color: #3b4250; max-width: 42em; margin-top: 2.4vh; }
+p, li { font-size: clamp(14px, 1.6vw, 19px); line-height: 1.7; }
+.note { margin-top: auto; padding-top: 3vh; font-family: var(--mono); font-size: clamp(10px, 1.1vw, 12.5px); color: var(--steel); }
+
+.cols { display: grid; gap: 2vw; }
+.cols.c2 { grid-template-columns: 1fr 1fr; }
+.cols.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.cols.c4 { grid-template-columns: repeat(4, 1fr); }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 2.6vh 1.6vw; }
+.card.top-blue { border-top: 4px solid var(--blue); }
+.card.top-orange { border-top: 4px solid var(--orange); }
+.card h3 { font-size: clamp(15px, 1.8vw, 22px); margin-bottom: 1.2vh; }
+.card .k { font-family: var(--mono); font-size: clamp(10px, 1.1vw, 13px); color: var(--orange); letter-spacing: .12em; display: block; margin-bottom: .8vh; }
+.card p { font-size: clamp(13px, 1.4vw, 17px); color: #3b4250; }
+
+.quote {
+  font-family: var(--serif); font-size: clamp(20px, 2.6vw, 32px); line-height: 1.5;
+  border-left: 4px solid var(--orange); padding-left: 2vw; margin: 2.4vh 0; color: var(--blue);
+}
+
+.flow { display: flex; align-items: stretch; gap: .8vw; margin: 2.4vh 0; flex-wrap: wrap; }
+.flow .step {
+  flex: 1 1 120px; background: var(--card); border: 1px solid var(--line);
+  border-top: 4px solid var(--blue); border-radius: 8px; padding: 1.8vh 1vw;
+}
+.flow .step .k { font-family: var(--mono); font-size: clamp(10px, 1vw, 12px); color: var(--orange); letter-spacing: .1em; display: block; margin-bottom: .6vh; }
+.flow .step strong { display: block; font-size: clamp(14px, 1.6vw, 19px); margin-bottom: .4vh; }
+.flow .step span { font-size: clamp(12px, 1.3vw, 15px); color: var(--steel); }
+.flow .arr { align-self: center; color: var(--steel); font-size: clamp(16px, 2vw, 24px); }
+
+table { border-collapse: collapse; width: 100%; background: var(--card); }
+th, td { border: 1px solid var(--line); padding: 1.4vh 1vw; text-align: left; font-size: clamp(12px, 1.5vw, 17px); line-height: 1.55; }
+th { background: var(--blue-soft); color: var(--blue); white-space: nowrap; }
+td:first-child { font-weight: 700; white-space: nowrap; }
+
+.anti-chip {
+  display: inline-block; font-family: var(--mono); font-size: clamp(10px, 1.1vw, 12px);
+  color: var(--orange); border: 1px solid var(--orange); border-radius: 999px;
+  padding: 2px 10px; letter-spacing: .1em;
+}
+
+ul.big { list-style: none; }
+ul.big li { padding: 1.6vh 0; border-bottom: 1px solid var(--line); display: flex; gap: 1.2vw; align-items: baseline; }
+ul.big li:last-child { border-bottom: 0; }
+ul.big .n { font-family: var(--mono); color: var(--orange); font-size: clamp(12px, 1.4vw, 16px); min-width: 2.2em; }
+
+.hud {
+  position: fixed; right: 18px; bottom: 14px; z-index: 10;
+  font-family: var(--mono); font-size: 12px; color: var(--steel);
+  display: flex; gap: 14px; align-items: center;
+}
+.hud button {
+  font-family: var(--mono); font-size: 13px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; cursor: pointer; color: var(--ink);
+}
+.hud button:hover { border-color: var(--orange); color: var(--orange); }
+.progress { position: fixed; left: 0; top: 0; height: 3px; background: var(--orange); width: 0; z-index: 10; }
+
+@media (max-width: 760px) {
+  .cols.c2, .cols.c3, .cols.c4 { grid-template-columns: 1fr; }
+  .slide { padding: 5vh 6vw; justify-content: flex-start; }
+  .flow { flex-direction: column; }
+  .flow .arr { transform: rotate(90deg); align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide active">
+  <p class="eyebrow">Vibe Adoption Framework · Roboco</p>
+  <h1>코드는 에이전트가 쓰고,<br><em>오너십은 사람이 가진다.</em></h1>
+  <p class="sub">기존 기업의 바이브 코딩 도입을 위한 프레임워크 — Vibe Adoption Framework(VAF) 소개</p>
+  <p class="note">vaf.roboco.io · github.com/roboco-io/vibe-adoption-framework</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="eyebrow">Why now</p>
+  <h2>도구는 이미 와 있다.<br>차이를 만드는 것은 <em>도입의 체계</em>다.</h2>
+  <div class="cols c2">
+    <div class="card top-blue">
+      <h3>에이전트를 조직 체계에 통합한 기업</h3>
+      <p>고수준 개발 인력을 낮은 비용으로 대규모 확보한 것과 같은 효과. 리드타임·품질·비용 구조가 바뀐다.</p>
+    </div>
+    <div class="card top-orange">
+      <h3>개인의 실험 수준에 머무는 기업</h3>
+      <p>도구를 쓰면서도 조직 차원의 성과로 연결하지 못한다. "AI를 썼는데 달라진 게 없다"는 결론으로 귀결.</p>
+    </div>
+  </div>
+  <p class="sub">코딩 에이전트는 이미 숙련 개발자가 하던 상당수의 작업을 대신한다. 격차는 계속 벌어지고 있다.</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="eyebrow">대전제</p>
+  <h2>바이브 코딩은 <em>소프트웨어 개발</em>이다</h2>
+  <p class="quote">달라지는 것은 원칙이 아니라 경제성이다.</p>
+  <ul class="big">
+    <li><span class="n">01</span><p>명확한 요구사항, 좋은 아키텍처, 리뷰, 테스트, 문서화 — 사람의 개발을 성공시키던 원칙이 에이전트의 개발도 성공시킨다.</p></li>
+    <li><span class="n">02</span><p>과거에 비쌌던 것들(꼼꼼한 리뷰, 철저한 테스트, 레거시 전체 분석)을 에이전트가 낮은 비용으로 상시 수행한다.</p></li>
+    <li><span class="n">03</span><p>질문은 "AI를 위해 무엇을 바꿀까"가 아니라 <strong>"원래 했어야 할 것을 에이전트와 어떻게 실현할까"</strong>.</p></li>
+  </ul>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="eyebrow">Foundational Principles</p>
+  <h2>모든 관점을 관통하는 <em>세 가지 원리</em></h2>
+  <div class="cols c3">
+    <div class="card top-blue">
+      <span class="k">원리 1</span>
+      <h3>에이전트는 인력 레버리지다</h3>
+      <p>유능한 신입에게 주는 것 — 접근 권한, 시스템 설명, 규칙, 명확한 지시, 리뷰 — 를 에이전트에게도 주어라. 실패하는 조직은 에이전트를 탓하고, 성공하는 조직은 온보딩 체계를 만든다.</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">원리 2</span>
+      <h3>오너십은 사람이 가진다</h3>
+      <p>"에이전트가 만들었으니 나는 모른다"를 허용하지 않는다. 작성 주체가 바뀌어도 설명의 의무는 이동하지 않는다. 누가 물어도 언제든 답할 수 있어야 한다.</p>
+    </div>
+    <div class="card top-orange">
+      <span class="k">원리 3</span>
+      <h3>인지부채는 관리 대상이다</h3>
+      <p>사람의 이해와 실제 시스템의 간극 = 인지부채. 기술부채처럼 제거가 아니라 트레이드오프 관리의 대상. 어디에 깊은 이해를 유지할지는 조직이 결정한다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="eyebrow">Named Concepts</p>
+  <h2>VAF의 <em>이름 붙은 개념</em> 두 가지</h2>
+  <div class="cols c2">
+    <div class="card top-blue">
+      <h3>하네스 엔지니어링</h3>
+      <p>사람이 하던 리뷰와 가드레일을 AI가 대신하도록 체계화하는 공학. 규칙 파일 · 자동 리뷰 · 훅 · 검증 파이프라인의 조합. 잘 만든 하네스는 사람의 리뷰를 <strong>더 높은 추상화 수준</strong>(의도·설계·트레이드오프)으로 끌어올린다.</p>
+    </div>
+    <div class="card top-orange">
+      <h3>취향 / 비취향의 구분</h3>
+      <p><strong>비취향</strong>(보안·가드레일·코딩 규약)은 저장소와 함께 관리되고 전원에게 강제된다. <strong>취향</strong>(문서화 상세 수준 등)만 극히 제한적으로 재량 허용. 저장소에 내장된 규칙은 에이전트에게 어길 수 없는 환경이 된다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="eyebrow">Framework</p>
+  <h2>세 개의 축</h2>
+  <div class="cols c3">
+    <div class="card top-blue">
+      <span class="k">축 1 · Perspective</span>
+      <h3>관점 6 · 역량 항목 26</h3>
+      <p>"조직이 무엇을 갖추어야 하는가?" 진단과 개선 계획의 단위.</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">축 2 · Domain</span>
+      <h3>전환 영역 4</h3>
+      <p>"실제로 무엇이 바뀌는가?" 각 영역의 AsIs → ToBe.</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">축 3 · Journey</span>
+      <h3>도입 여정 4단계</h3>
+      <p>"어떤 순서로 진행하는가?" 준비→진단→파일럿→전환의 반복 사이클.</p>
+    </div>
+  </div>
+  <p class="sub">여정을 따라 나아가며, 역량을 갖추고, 그 역량으로 전환 영역의 AsIs를 ToBe로 바꾼다.</p>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="eyebrow">Value Chain</p>
+  <h2>역량에서 아웃컴까지</h2>
+  <div class="flow">
+    <div class="step"><span class="k">CAPABILITY</span><strong>에이전트 역량</strong><span>코딩 에이전트의 등장</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">ADOPTION</span><strong>도입</strong><span>6개 관점의 역량 확보</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">TRANSFORMATION</span><strong>전환</strong><span>4개 영역 AsIs → ToBe</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">OUTCOME</span><strong>비즈니스 아웃컴</strong><span>리드타임 · 품질 · 비용 · 지식</span></div>
+  </div>
+  <div class="cols c2">
+    <div class="card"><h3>함정 1</h3><p>도구 도입을 성과로 착각 — 라이선스 구매는 사슬의 첫 칸일 뿐.</p></div>
+    <div class="card"><h3>함정 2</h3><p>전환 없이 성과를 바로 요구 — "AI를 썼는데 달라진 게 없다"는 잘못된 결론.</p></div>
+  </div>
+  <p class="note">경영진의 질문: 지금 이 사슬의 어느 칸이 병목인가? 그것이 투자 우선순위다.</p>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="eyebrow">Transformation Domains</p>
+  <h2>전환이 일어나는 <em>네 영역</em></h2>
+  <table>
+    <tr><th>Domain</th><th>AsIs</th><th>ToBe</th></tr>
+    <tr><td>코드 생산</td><td>사람이 작성, 채용이 곧 용량 계획</td><td>에이전트가 작성, 사람은 의도 지시와 승인</td></tr>
+    <tr><td>품질 보증</td><td>사람 리뷰, 일정 압박에 가장 먼저 희생</td><td>하네스가 자동 강제, 사람은 설계 판단에 집중</td></tr>
+    <tr><td>지식</td><td>암묵지·구두 전승, 퇴사 = 지식 손실</td><td>에이전트가 상시 활용하는 문서화된 지식기반</td></tr>
+    <tr><td>조직과 역할</td><td>작성자 중심 팀, 코드량으로 평가</td><td>오너·오케스트레이터 중심 팀</td></tr>
+  </table>
+  <p class="note">가장 느리고 어려운 전환은 조직과 역할 — 명시적으로 다루지 않으면 "도구는 샀는데 아무도 쓰지 않는" 상태가 된다</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="eyebrow">Perspectives</p>
+  <h2>관점 6개 — <em>역량의 지도</em></h2>
+  <div class="cols c3">
+    <div class="card top-blue"><span class="k">P1 · 사람과 조직</span><h3>Strategy</h3><p>왜, 무엇을 얻는가 — 도입 전략, ROI 측정, SDLC 갭 분석, 우선순위</p></div>
+    <div class="card top-blue"><span class="k">P2 · 사람과 조직</span><h3>People &amp; Ownership</h3><p>사람의 역할 — 오너십 체계, 인지부채 관리, 역할 전환, 역량 개발, 문화</p></div>
+    <div class="card top-blue"><span class="k">P3 · 사람과 조직</span><h3>Governance &amp; Guardrails</h3><p>무엇을 강제하는가 — 취향/비취향, 정책의 저장소 강제, 보안, 비용</p></div>
+    <div class="card top-orange"><span class="k">P4 · 에이전트 기술</span><h3>Agent Environment</h3><p>에이전트가 일할 수 있는가 — 접근 통로, 도구 연결, 실행 환경, 권한</p></div>
+    <div class="card top-orange"><span class="k">P5 · 에이전트 기술</span><h3>Knowledge</h3><p>에이전트가 아는가 — 지식기반, 리포지토리 문서화, 현안 문서화, 컨텍스트 공급</p></div>
+    <div class="card top-orange"><span class="k">P6 · 에이전트 기술</span><h3>Harness Engineering</h3><p>품질을 누가 지키는가 — 규칙 파일, 스킬·훅, 자동 리뷰, 검증 파이프라인, 개선 루프</p></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="eyebrow">Perspectives in one line</p>
+  <h2>관점이 던지는 <em>여섯 개의 질문</em></h2>
+  <ul class="big">
+    <li><span class="n">P1</span><p><strong>왜 도입하며, 무엇을 얻는가?</strong> — 이 관점이 부실하면 나머지 다섯의 노력은 개인기로 흩어진다.</p></li>
+    <li><span class="n">P2</span><p><strong>사람의 역할은 무엇인가?</strong> — 사람의 가치는 무엇을 작성했는가가 아니라 무엇을 책임지는가.</p></li>
+    <li><span class="n">P3</span><p><strong>무엇을 강제하는가?</strong> — 에이전트는 규칙을 어기려는 의지가 없다. 규칙이 환경에 없으면 존재를 모를 뿐.</p></li>
+    <li><span class="n">P4</span><p><strong>에이전트가 일할 수 있는가?</strong> — 계정 없는 신입에게 성과를 기대할 수 없다.</p></li>
+    <li><span class="n">P5</span><p><strong>에이전트가 아는가?</strong> — 에이전트의 성과는 접근 가능한 지식의 질에 비례한다.</p></li>
+    <li><span class="n">P6</span><p><strong>품질을 누가 지키는가?</strong> — 하네스 없는 조직에서 에이전트의 속도는 곧 결함의 속도다.</p></li>
+  </ul>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <p class="eyebrow">Adoption Journey</p>
+  <h2>도입 여정 — <em>반복되는 4단계</em></h2>
+  <div class="flow">
+    <div class="step"><span class="k">J1</span><strong>준비 Prepare</strong><span>접근 통로 · 도구 연결 · 실행 환경 · 권한</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J2</span><strong>진단 Assess</strong><span>현안 인터뷰 · 리포지토리 분석 · 갭 정리 · 기준선</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J3</span><strong>파일럿 Pilot</strong><span>하네스 구축 · 개발 전환 · 회고 · 플레이북</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J4</span><strong>전환 Transform</strong><span>전사 확산 · 제도화 · 지표 관측 · 다음 사이클</span></div>
+  </div>
+  <p class="quote">VAF는 진단보다 환경 준비를 먼저 둔다.<br>진단·분석·문서화의 수행 주체가 에이전트이기 때문이다.</p>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <p class="eyebrow">Journey Principles</p>
+  <h2>여정 운영의 <em>네 가지 원칙</em></h2>
+  <ul class="big">
+    <li><span class="n">01</span><p><strong>작게 완주하라</strong> — 좁게 끝까지 가는 것이 넓게 걸치고 멈추는 것보다 낫다. 완주 경험이 확산의 연료다.</p></li>
+    <li><span class="n">02</span><p><strong>단계를 건너뛰지 마라</strong> — 준비 없는 진단은 사람의 속도로, 진단 없는 파일럿은 맥락 없는 코드로, 파일럿 없는 전환은 검증 안 된 강요로.</p></li>
+    <li><span class="n">03</span><p><strong>모든 단계에서 심층인터뷰로 확인하라</strong> — 문서가 현실과 어긋난 채 다음 단계로 넘어가는 것이 가장 비싼 실패다.</p></li>
+    <li><span class="n">04</span><p><strong>지표는 사이클마다 갱신하라</strong> — 경영진의 신뢰는 지표의 연속성에서 나온다.</p></li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <p class="eyebrow">Anti-patterns</p>
+  <h2>도입을 좌초시키는 <em>흔한 실패</em></h2>
+  <div class="cols c2">
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>목적 없는 도구 배포</h3><p>6개월 뒤 "활용률이 낮다"는 보고와 함께 동력 소진.</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>기준선 없는 시작</h3><p>성과를 증명하지 못해 예산 갱신 시점에 좌초.</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>보안 검토를 마지막에</h3><p>돌아오는 답은 전면 차단. 보안은 설계 참여자로.</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>사고 후 "에이전트 금지"</h3><p>원인은 에이전트가 아니라 하네스의 공백이다.</p></div>
+  </div>
+  <p class="note">VAF 본문에는 26개 역량 항목마다 안티패턴이 명시되어 있다</p>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <p class="eyebrow">Execution Kit</p>
+  <h2>바로 쓸 수 있는 <em>실행 키트</em> (부록)</h2>
+  <div class="cols c4">
+    <div class="card top-blue"><h3>성숙도 어세스먼트</h3><p>26개 역량 × 3단계(부재/부분/정착) 판별 질문</p></div>
+    <div class="card top-blue"><h3>심층인터뷰 질문지</h3><p>비즈니스 현안 · IT 현안 · SDLC · 지식 관리 4개 영역</p></div>
+    <div class="card top-blue"><h3>워크숍 가이드</h3><p>진단 워크숍(반나절) · 파일럿 착수 워크숍(1일)</p></div>
+    <div class="card top-blue"><h3>용어집</h3><p>프레임워크 전 용어 한/영 병기</p></div>
+  </div>
+  <p class="sub">진단 단계의 어세스먼트와 인터뷰, 파일럿 착수까지 — 프레임워크를 읽는 것에서 실행하는 것으로.</p>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <p class="eyebrow">Expected Outcomes</p>
+  <h2>도입이 완성되면 <em>무엇이 달라지는가</em></h2>
+  <div class="cols c2">
+    <div class="card top-blue"><h3>리드타임 단축</h3><p>기능 개발·버그 수정·레거시 분석이 병렬로, 상시로.</p></div>
+    <div class="card top-blue"><h3>품질의 일관성</h3><p>리뷰·검증이 하네스로 옮겨가 예외 없이 강제.</p></div>
+    <div class="card top-blue"><h3>비용 구조의 변화</h3><p>인력 규모에 비례하던 개발 용량의 한계가 완화.</p></div>
+    <div class="card top-blue"><h3>지식의 자산화</h3><p>암묵지가 문서화된 지식기반으로, 개인 의존 해소.</p></div>
+  </div>
+  <p class="quote">사람이 코드를 손으로 쓰지 않는 상태가 기본값이 되고,<br>오너십과 인지부채 관리 체계가 그것을 지탱한다.</p>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <p class="eyebrow">Vibe Adoption Framework</p>
+  <h1>읽고, 진단하고, <em>시작하세요.</em></h1>
+  <div class="cols c3" style="margin-top:4vh">
+    <div class="card"><h3>📄 프레임워크 전문</h3><p>vaf.roboco.io<br>(EN · 한국어 · 日本語)</p></div>
+    <div class="card"><h3>💻 GitHub</h3><p>github.com/roboco-io/<br>vibe-adoption-framework</p></div>
+    <div class="card"><h3>🤝 도입 컨설팅</h3><p>로보코 — roboco.io</p></div>
+  </div>
+  <p class="note">© Roboco · Vibe Adoption Framework</p>
+</section>
+
+</div>
+
+<div class="hud">
+  <button id="prev" aria-label="이전 슬라이드">←</button>
+  <span id="counter">1 / 16</span>
+  <button id="next" aria-label="다음 슬라이드">→</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+let cur = 0;
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+  document.getElementById('counter').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+document.getElementById('next').addEventListener('click', () => show(cur + 1));
+document.getElementById('prev').addEventListener('click', () => show(cur - 1));
+document.addEventListener('keydown', e => {
+  if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+  if (e.key === 'Home') show(0);
+  if (e.key === 'End') show(slides.length - 1);
+});
+let tx = null;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
+document.addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 60) show(cur + (dx < 0 ? 1 : -1));
+  tx = null;
+}, {passive: true});
+const h = parseInt(location.hash.slice(1), 10);
+if (h >= 1 && h <= slides.length) show(h - 1);
+</script>
+</body>
+</html>
