@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VAF Introduction Slides — Roboco</title>
+<meta name="description" content="Vibe Adoption Framework presentation slides (English)">
+<link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root {
+  --ink: #161a26; --paper: #f7f8fa; --card: #ffffff;
+  --blue: #1d2a5e; --blue-soft: #eef1f9;
+  --orange: #e8590c; --orange-soft: #fdf0e7;
+  --steel: #6a7382; --line: #dce0e8;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --serif: "Noto Serif KR", serif;
+  --sans: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: var(--sans); color: var(--ink); background: var(--paper); overflow: hidden; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+.deck { height: 100%; position: relative; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  flex-direction: column; justify-content: center;
+  padding: 6vh 8vw; overflow-y: auto;
+}
+.slide.active { display: flex; }
+@media (prefers-reduced-motion: no-preference) {
+  .slide.active { animation: fadein .28s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+
+.eyebrow {
+  font-family: var(--mono); font-size: clamp(11px, 1.3vw, 14px);
+  letter-spacing: .22em; color: var(--orange); text-transform: uppercase; margin-bottom: 2.4vh;
+}
+h1 { font-family: var(--serif); font-weight: 700; font-size: clamp(30px, 5.2vw, 64px); line-height: 1.32; }
+h1 em { font-style: normal; color: var(--blue); }
+h2 { font-family: var(--serif); font-weight: 700; font-size: clamp(24px, 3.4vw, 42px); line-height: 1.35; margin-bottom: 3.6vh; }
+h2 em { font-style: normal; color: var(--orange); }
+.sub { font-size: clamp(15px, 1.7vw, 21px); color: #3b4250; max-width: 42em; margin-top: 2.4vh; }
+p, li { font-size: clamp(14px, 1.6vw, 19px); line-height: 1.7; }
+.note { margin-top: auto; padding-top: 3vh; font-family: var(--mono); font-size: clamp(10px, 1.1vw, 12.5px); color: var(--steel); }
+
+.cols { display: grid; gap: 2vw; }
+.cols.c2 { grid-template-columns: 1fr 1fr; }
+.cols.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.cols.c4 { grid-template-columns: repeat(4, 1fr); }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 2.6vh 1.6vw; }
+.card.top-blue { border-top: 4px solid var(--blue); }
+.card.top-orange { border-top: 4px solid var(--orange); }
+.card h3 { font-size: clamp(15px, 1.8vw, 22px); margin-bottom: 1.2vh; }
+.card .k { font-family: var(--mono); font-size: clamp(10px, 1.1vw, 13px); color: var(--orange); letter-spacing: .12em; display: block; margin-bottom: .8vh; }
+.card p { font-size: clamp(13px, 1.4vw, 17px); color: #3b4250; }
+
+.quote {
+  font-family: var(--serif); font-size: clamp(20px, 2.6vw, 32px); line-height: 1.5;
+  border-left: 4px solid var(--orange); padding-left: 2vw; margin: 2.4vh 0; color: var(--blue);
+}
+
+.flow { display: flex; align-items: stretch; gap: .8vw; margin: 2.4vh 0; flex-wrap: wrap; }
+.flow .step {
+  flex: 1 1 120px; background: var(--card); border: 1px solid var(--line);
+  border-top: 4px solid var(--blue); border-radius: 8px; padding: 1.8vh 1vw;
+}
+.flow .step .k { font-family: var(--mono); font-size: clamp(10px, 1vw, 12px); color: var(--orange); letter-spacing: .1em; display: block; margin-bottom: .6vh; }
+.flow .step strong { display: block; font-size: clamp(14px, 1.6vw, 19px); margin-bottom: .4vh; }
+.flow .step span { font-size: clamp(12px, 1.3vw, 15px); color: var(--steel); }
+.flow .arr { align-self: center; color: var(--steel); font-size: clamp(16px, 2vw, 24px); }
+
+table { border-collapse: collapse; width: 100%; background: var(--card); }
+th, td { border: 1px solid var(--line); padding: 1.4vh 1vw; text-align: left; font-size: clamp(12px, 1.5vw, 17px); line-height: 1.55; }
+th { background: var(--blue-soft); color: var(--blue); white-space: nowrap; }
+td:first-child { font-weight: 700; white-space: nowrap; }
+
+.anti-chip {
+  display: inline-block; font-family: var(--mono); font-size: clamp(10px, 1.1vw, 12px);
+  color: var(--orange); border: 1px solid var(--orange); border-radius: 999px;
+  padding: 2px 10px; letter-spacing: .1em;
+}
+
+ul.big { list-style: none; }
+ul.big li { padding: 1.6vh 0; border-bottom: 1px solid var(--line); display: flex; gap: 1.2vw; align-items: baseline; }
+ul.big li:last-child { border-bottom: 0; }
+ul.big .n { font-family: var(--mono); color: var(--orange); font-size: clamp(12px, 1.4vw, 16px); min-width: 2.2em; }
+
+.hud {
+  position: fixed; right: 18px; bottom: 14px; z-index: 10;
+  font-family: var(--mono); font-size: 12px; color: var(--steel);
+  display: flex; gap: 14px; align-items: center;
+}
+.hud button {
+  font-family: var(--mono); font-size: 13px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; cursor: pointer; color: var(--ink);
+}
+.hud button:hover { border-color: var(--orange); color: var(--orange); }
+.progress { position: fixed; left: 0; top: 0; height: 3px; background: var(--orange); width: 0; z-index: 10; }
+
+@media (max-width: 760px) {
+  .cols.c2, .cols.c3, .cols.c4 { grid-template-columns: 1fr; }
+  .slide { padding: 5vh 6vw; justify-content: flex-start; }
+  .flow { flex-direction: column; }
+  .flow .arr { transform: rotate(90deg); align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide active">
+  <p class="eyebrow">Vibe Adoption Framework · Roboco</p>
+  <h1>Agents write the code.<br><em>Humans own it.</em></h1>
+  <p class="sub">A framework for adopting vibe coding in established enterprises — introducing the Vibe Adoption Framework (VAF)</p>
+  <p class="note">vaf.roboco.io · github.com/roboco-io/vibe-adoption-framework</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="eyebrow">Why now</p>
+  <h2>The tools are already here.<br>What makes the difference is <em>a system of adoption</em>.</h2>
+  <div class="cols c2">
+    <div class="card top-blue">
+      <h3>Companies that integrate agents into their organizational system</h3>
+      <p>The effect is like hiring a large number of senior-level developers at low cost. Lead time, quality, and cost structure all change.</p>
+    </div>
+    <div class="card top-orange">
+      <h3>Companies stuck at individual experimentation</h3>
+      <p>They use the tools but never convert them into organizational results. It ends with the conclusion "we used AI and nothing changed."</p>
+    </div>
+  </div>
+  <p class="sub">Coding agents already handle much of the work skilled developers used to do. The gap keeps widening.</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="eyebrow">Core premise</p>
+  <h2>Vibe coding is <em>software development</em></h2>
+  <p class="quote">What changes is not the principles but the economics.</p>
+  <ul class="big">
+    <li><span class="n">01</span><p>Clear requirements, good architecture, review, testing, documentation — the principles that made human development succeed make agent development succeed too.</p></li>
+    <li><span class="n">02</span><p>What used to be expensive — meticulous reviews, thorough testing, full legacy analysis — agents now perform continuously at low cost.</p></li>
+    <li><span class="n">03</span><p>The question is not "what do we change for AI" but <strong>"how do we use agents to realize what we should have been doing all along?"</strong></p></li>
+  </ul>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="eyebrow">Foundational Principles</p>
+  <h2><em>Three principles</em> that cut across every perspective</h2>
+  <div class="cols c3">
+    <div class="card top-blue">
+      <span class="k">Principle 1</span>
+      <h3>Agents as workforce leverage</h3>
+      <p>Give agents what you give a capable new hire — access, system explanations, rules, clear instructions, review. Failing organizations blame the agent; successful ones build an onboarding system.</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">Principle 2</span>
+      <h3>Humans own it</h3>
+      <p>"The agent wrote it, so I don't know" is not allowed. Even when the author changes, the duty to explain does not move. You must be able to answer whenever anyone asks.</p>
+    </div>
+    <div class="card top-orange">
+      <span class="k">Principle 3</span>
+      <h3>Cognitive debt is something to manage</h3>
+      <p>The gap between human understanding and the actual system = cognitive debt. Like technical debt, it is a trade-off to manage, not something to eliminate. The organization decides where to keep deep understanding.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="eyebrow">Named Concepts</p>
+  <h2>Two <em>named concepts</em> in VAF</h2>
+  <div class="cols c2">
+    <div class="card top-blue">
+      <h3>Harness Engineering</h3>
+      <p>The engineering of systematizing the reviews and guardrails humans used to perform so that AI carries them out — a combination of rule files, automated review, hooks, and verification pipelines. A well-built harness elevates human review to a <strong>higher level of abstraction</strong>: intent, design, trade-offs.</p>
+    </div>
+    <div class="card top-orange">
+      <h3>Taste vs. non-taste</h3>
+      <p><strong>Non-taste</strong> (security, guardrails, coding conventions) is managed with the repository and enforced on everyone. Only <strong>taste</strong> (e.g. level of documentation detail) is left to very limited discretion. Rules embedded in the repository become an environment agents cannot violate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="eyebrow">Framework</p>
+  <h2>Three axes</h2>
+  <div class="cols c3">
+    <div class="card top-blue">
+      <span class="k">Axis 1 · Perspective</span>
+      <h3>6 perspectives · 26 capability items</h3>
+      <p>"What must the organization have in place?" The unit of assessment and improvement planning.</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">Axis 2 · Domain</span>
+      <h3>4 transformation domains</h3>
+      <p>"What actually changes?" AsIs → ToBe for each domain.</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">Axis 3 · Journey</span>
+      <h3>4-stage adoption journey</h3>
+      <p>"In what order do we proceed?" A repeating cycle of Prepare → Assess → Pilot → Transform.</p>
+    </div>
+  </div>
+  <p class="sub">Move along the journey, build the capabilities, and use them to turn each domain's AsIs into its ToBe.</p>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="eyebrow">Value Chain</p>
+  <h2>From capability to outcome</h2>
+  <div class="flow">
+    <div class="step"><span class="k">CAPABILITY</span><strong>Agent capability</strong><span>The arrival of coding agents</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">ADOPTION</span><strong>Adoption</strong><span>Building capabilities across 6 perspectives</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">TRANSFORMATION</span><strong>Transformation</strong><span>4 domains, AsIs → ToBe</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">OUTCOME</span><strong>Business outcomes</strong><span>Lead time · quality · cost · knowledge</span></div>
+  </div>
+  <div class="cols c2">
+    <div class="card"><h3>Trap 1</h3><p>Mistaking tool adoption for results — buying licenses is only the first link in the chain.</p></div>
+    <div class="card"><h3>Trap 2</h3><p>Demanding outcomes without transformation — the false conclusion that "we used AI and nothing changed."</p></div>
+  </div>
+  <p class="note">The executive question: which link in this chain is the bottleneck right now? That is your investment priority.</p>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="eyebrow">Transformation Domains</p>
+  <h2>The <em>four domains</em> where transformation happens</h2>
+  <table>
+    <tr><th>Domain</th><th>AsIs</th><th>ToBe</th></tr>
+    <tr><td>Code Production</td><td>Humans write code; hiring is capacity planning</td><td>Agents write code; humans direct intent and approve</td></tr>
+    <tr><td>Quality Assurance</td><td>Human review, first to be sacrificed under deadline pressure</td><td>The harness enforces automatically; humans focus on design judgment</td></tr>
+    <tr><td>Knowledge</td><td>Tacit knowledge and oral tradition; departure = knowledge loss</td><td>A documented knowledge base agents use continuously</td></tr>
+    <tr><td>Organization &amp; Roles</td><td>Author-centric teams, evaluated by code volume</td><td>Owner- and orchestrator-centric teams</td></tr>
+  </table>
+  <p class="note">The slowest and hardest transformation is Organization &amp; Roles — left unaddressed, you end up with "tools bought, nobody using them"</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="eyebrow">Perspectives</p>
+  <h2>Six perspectives — <em>a map of capabilities</em></h2>
+  <div class="cols c3">
+    <div class="card top-blue"><span class="k">P1 · People &amp; Organization</span><h3>Strategy</h3><p>Why, and what do we gain — adoption strategy, ROI measurement, SDLC gap analysis, prioritization</p></div>
+    <div class="card top-blue"><span class="k">P2 · People &amp; Organization</span><h3>People &amp; Ownership</h3><p>The human role — ownership system, cognitive debt management, role transition, capability development, culture</p></div>
+    <div class="card top-blue"><span class="k">P3 · People &amp; Organization</span><h3>Governance &amp; Guardrails</h3><p>What do we enforce — taste vs. non-taste, repository-enforced policy, security, cost</p></div>
+    <div class="card top-orange"><span class="k">P4 · Agent Technology</span><h3>Agent Environment</h3><p>Can agents work — access channels, tool connections, execution environment, permissions</p></div>
+    <div class="card top-orange"><span class="k">P5 · Agent Technology</span><h3>Knowledge</h3><p>Do agents know — knowledge base, repository documentation, documented business issues, context supply</p></div>
+    <div class="card top-orange"><span class="k">P6 · Agent Technology</span><h3>Harness Engineering</h3><p>Who guards quality — rule files, skills and hooks, automated review, verification pipeline, improvement loop</p></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="eyebrow">Perspectives in one line</p>
+  <h2>The <em>six questions</em> the perspectives ask</h2>
+  <ul class="big">
+    <li><span class="n">P1</span><p><strong>Why adopt, and what do we gain?</strong> — When this perspective is weak, the other five dissolve into individual heroics.</p></li>
+    <li><span class="n">P2</span><p><strong>What is the human role?</strong> — Human value lies not in what you wrote but in what you are accountable for.</p></li>
+    <li><span class="n">P3</span><p><strong>What do we enforce?</strong> — Agents have no will to break rules. If a rule is not in the environment, they simply don't know it exists.</p></li>
+    <li><span class="n">P4</span><p><strong>Can agents work?</strong> — You cannot expect results from a new hire with no account.</p></li>
+    <li><span class="n">P5</span><p><strong>Do agents know?</strong> — Agent performance is proportional to the quality of accessible knowledge.</p></li>
+    <li><span class="n">P6</span><p><strong>Who guards quality?</strong> — In an organization without a harness, agent speed is defect speed.</p></li>
+  </ul>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <p class="eyebrow">Adoption Journey</p>
+  <h2>The adoption journey — <em>four repeating stages</em></h2>
+  <div class="flow">
+    <div class="step"><span class="k">J1</span><strong>Prepare</strong><span>Access channels · tool connections · execution environment · permissions</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J2</span><strong>Assess</strong><span>Issue interviews · repository analysis · gap mapping · baseline</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J3</span><strong>Pilot</strong><span>Harness build · development transition · retrospective · playbook</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J4</span><strong>Transform</strong><span>Org-wide rollout · institutionalization · metric tracking · next cycle</span></div>
+  </div>
+  <p class="quote">VAF puts environment preparation before assessment —<br>because the agents themselves perform the assessment, analysis, and documentation.</p>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <p class="eyebrow">Journey Principles</p>
+  <h2><em>Four principles</em> for running the journey</h2>
+  <ul class="big">
+    <li><span class="n">01</span><p><strong>Finish small</strong> — Going narrow to the finish beats spreading wide and stalling. The experience of completing a cycle is the fuel for expansion.</p></li>
+    <li><span class="n">02</span><p><strong>Don't skip stages</strong> — Assessment without preparation runs at human speed; a pilot without assessment produces context-free code; transformation without a pilot is unverified coercion.</p></li>
+    <li><span class="n">03</span><p><strong>Verify with in-depth interviews at every stage</strong> — Moving to the next stage while documents diverge from reality is the most expensive failure.</p></li>
+    <li><span class="n">04</span><p><strong>Refresh metrics every cycle</strong> — Executive trust comes from metric continuity.</p></li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <p class="eyebrow">Anti-patterns</p>
+  <h2><em>Common failures</em> that sink adoption</h2>
+  <div class="cols c2">
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>Tool rollout without purpose</h3><p>Six months later, momentum dies with a "usage is low" report.</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>Starting without a baseline</h3><p>Unable to prove results, the effort founders at budget renewal.</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>Security review at the end</h3><p>The answer that comes back is a total block. Bring security in as a design participant.</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>"Ban the agents" after an incident</h3><p>The cause is not the agent but a gap in the harness.</p></div>
+  </div>
+  <p class="note">The full VAF text specifies anti-patterns for each of the 26 capability items</p>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <p class="eyebrow">Execution Kit</p>
+  <h2>A ready-to-use <em>execution kit</em> (appendix)</h2>
+  <div class="cols c4">
+    <div class="card top-blue"><h3>Maturity assessment</h3><p>Diagnostic questions for 26 capabilities × 3 levels (absent / partial / established)</p></div>
+    <div class="card top-blue"><h3>In-depth interview guide</h3><p>Four areas: business issues · IT issues · SDLC · knowledge management</p></div>
+    <div class="card top-blue"><h3>Workshop guides</h3><p>Assessment workshop (half day) · pilot kickoff workshop (1 day)</p></div>
+    <div class="card top-blue"><h3>Glossary</h3><p>All framework terms in Korean and English</p></div>
+  </div>
+  <p class="sub">From assessment and interviews through pilot kickoff — from reading the framework to executing it.</p>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <p class="eyebrow">Expected Outcomes</p>
+  <h2>When adoption is complete, <em>what changes</em></h2>
+  <div class="cols c2">
+    <div class="card top-blue"><h3>Shorter lead time</h3><p>Feature development, bug fixes, and legacy analysis run in parallel, continuously.</p></div>
+    <div class="card top-blue"><h3>Consistent quality</h3><p>Review and verification move into the harness and are enforced without exception.</p></div>
+    <div class="card top-blue"><h3>A changed cost structure</h3><p>Development capacity is no longer capped by headcount.</p></div>
+    <div class="card top-blue"><h3>Knowledge as an asset</h3><p>Tacit knowledge becomes a documented knowledge base, ending dependence on individuals.</p></div>
+  </div>
+  <p class="quote">Humans not writing code by hand becomes the default,<br>sustained by a system of ownership and cognitive debt management.</p>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <p class="eyebrow">Vibe Adoption Framework</p>
+  <h1>Read, assess, <em>and begin.</em></h1>
+  <div class="cols c3" style="margin-top:4vh">
+    <div class="card"><h3>📄 Full framework text</h3><p>vaf.roboco.io<br>(EN · 한국어 · 日本語)</p></div>
+    <div class="card"><h3>💻 GitHub</h3><p>github.com/roboco-io/<br>vibe-adoption-framework</p></div>
+    <div class="card"><h3>🤝 Adoption consulting</h3><p>Roboco — roboco.io</p></div>
+  </div>
+  <p class="note">© Roboco · Vibe Adoption Framework</p>
+</section>
+
+</div>
+
+<div class="hud">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <span id="counter">1 / 16</span>
+  <button id="next" aria-label="Next slide">→</button>
+  <button id="fs" aria-label="Toggle fullscreen" title="Fullscreen (F)">⛶</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+let cur = 0;
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+  document.getElementById('counter').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+document.getElementById('next').addEventListener('click', () => show(cur + 1));
+document.getElementById('prev').addEventListener('click', () => show(cur - 1));
+function toggleFullscreen() {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen();
+}
+document.getElementById('fs').addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange', () => {
+  document.getElementById('fs').textContent = document.fullscreenElement ? '⛶✕' : '⛶';
+});
+document.addEventListener('keydown', e => {
+  if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+  if (e.key === 'Home') show(0);
+  if (e.key === 'End') show(slides.length - 1);
+  if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+});
+let tx = null;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
+document.addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 60) show(cur + (dx < 0 ? 1 : -1));
+  tx = null;
+}, {passive: true});
+const h = parseInt(location.hash.slice(1), 10);
+if (h >= 1 && h <= slides.length) show(h - 1);
+</script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VAF紹介スライド — ロボコ</title>
+<meta name="description" content="Vibe Adoption Frameworkプレゼンテーション用スライド（日本語）">
+<link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-jp-dynamic-subset.min.css">
+<style>
+:root {
+  --ink: #161a26; --paper: #f7f8fa; --card: #ffffff;
+  --blue: #1d2a5e; --blue-soft: #eef1f9;
+  --orange: #e8590c; --orange-soft: #fdf0e7;
+  --steel: #6a7382; --line: #dce0e8;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --serif: "Noto Serif JP", serif;
+  --sans: "Pretendard JP Variable", "Pretendard JP", -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: var(--sans); color: var(--ink); background: var(--paper); overflow: hidden; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+.deck { height: 100%; position: relative; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  flex-direction: column; justify-content: center;
+  padding: 6vh 8vw; overflow-y: auto;
+}
+.slide.active { display: flex; }
+@media (prefers-reduced-motion: no-preference) {
+  .slide.active { animation: fadein .28s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+
+.eyebrow {
+  font-family: var(--mono); font-size: clamp(11px, 1.3vw, 14px);
+  letter-spacing: .22em; color: var(--orange); text-transform: uppercase; margin-bottom: 2.4vh;
+}
+h1 { font-family: var(--serif); font-weight: 700; font-size: clamp(30px, 5.2vw, 64px); line-height: 1.32; }
+h1 em { font-style: normal; color: var(--blue); }
+h2 { font-family: var(--serif); font-weight: 700; font-size: clamp(24px, 3.4vw, 42px); line-height: 1.35; margin-bottom: 3.6vh; }
+h2 em { font-style: normal; color: var(--orange); }
+.sub { font-size: clamp(15px, 1.7vw, 21px); color: #3b4250; max-width: 42em; margin-top: 2.4vh; }
+p, li { font-size: clamp(14px, 1.6vw, 19px); line-height: 1.7; }
+.note { margin-top: auto; padding-top: 3vh; font-family: var(--mono); font-size: clamp(10px, 1.1vw, 12.5px); color: var(--steel); }
+
+.cols { display: grid; gap: 2vw; }
+.cols.c2 { grid-template-columns: 1fr 1fr; }
+.cols.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.cols.c4 { grid-template-columns: repeat(4, 1fr); }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 2.6vh 1.6vw; }
+.card.top-blue { border-top: 4px solid var(--blue); }
+.card.top-orange { border-top: 4px solid var(--orange); }
+.card h3 { font-size: clamp(15px, 1.8vw, 22px); margin-bottom: 1.2vh; }
+.card .k { font-family: var(--mono); font-size: clamp(10px, 1.1vw, 13px); color: var(--orange); letter-spacing: .12em; display: block; margin-bottom: .8vh; }
+.card p { font-size: clamp(13px, 1.4vw, 17px); color: #3b4250; }
+
+.quote {
+  font-family: var(--serif); font-size: clamp(20px, 2.6vw, 32px); line-height: 1.5;
+  border-left: 4px solid var(--orange); padding-left: 2vw; margin: 2.4vh 0; color: var(--blue);
+}
+
+.flow { display: flex; align-items: stretch; gap: .8vw; margin: 2.4vh 0; flex-wrap: wrap; }
+.flow .step {
+  flex: 1 1 120px; background: var(--card); border: 1px solid var(--line);
+  border-top: 4px solid var(--blue); border-radius: 8px; padding: 1.8vh 1vw;
+}
+.flow .step .k { font-family: var(--mono); font-size: clamp(10px, 1vw, 12px); color: var(--orange); letter-spacing: .1em; display: block; margin-bottom: .6vh; }
+.flow .step strong { display: block; font-size: clamp(14px, 1.6vw, 19px); margin-bottom: .4vh; }
+.flow .step span { font-size: clamp(12px, 1.3vw, 15px); color: var(--steel); }
+.flow .arr { align-self: center; color: var(--steel); font-size: clamp(16px, 2vw, 24px); }
+
+table { border-collapse: collapse; width: 100%; background: var(--card); }
+th, td { border: 1px solid var(--line); padding: 1.4vh 1vw; text-align: left; font-size: clamp(12px, 1.5vw, 17px); line-height: 1.55; }
+th { background: var(--blue-soft); color: var(--blue); white-space: nowrap; }
+td:first-child { font-weight: 700; white-space: nowrap; }
+
+.anti-chip {
+  display: inline-block; font-family: var(--mono); font-size: clamp(10px, 1.1vw, 12px);
+  color: var(--orange); border: 1px solid var(--orange); border-radius: 999px;
+  padding: 2px 10px; letter-spacing: .1em;
+}
+
+ul.big { list-style: none; }
+ul.big li { padding: 1.6vh 0; border-bottom: 1px solid var(--line); display: flex; gap: 1.2vw; align-items: baseline; }
+ul.big li:last-child { border-bottom: 0; }
+ul.big .n { font-family: var(--mono); color: var(--orange); font-size: clamp(12px, 1.4vw, 16px); min-width: 2.2em; }
+
+.hud {
+  position: fixed; right: 18px; bottom: 14px; z-index: 10;
+  font-family: var(--mono); font-size: 12px; color: var(--steel);
+  display: flex; gap: 14px; align-items: center;
+}
+.hud button {
+  font-family: var(--mono); font-size: 13px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; cursor: pointer; color: var(--ink);
+}
+.hud button:hover { border-color: var(--orange); color: var(--orange); }
+.progress { position: fixed; left: 0; top: 0; height: 3px; background: var(--orange); width: 0; z-index: 10; }
+
+@media (max-width: 760px) {
+  .cols.c2, .cols.c3, .cols.c4 { grid-template-columns: 1fr; }
+  .slide { padding: 5vh 6vw; justify-content: flex-start; }
+  .flow { flex-direction: column; }
+  .flow .arr { transform: rotate(90deg); align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide active">
+  <p class="eyebrow">Vibe Adoption Framework · Roboco</p>
+  <h1>コードはエージェントが書き、<br><em>オーナーシップは人が持つ。</em></h1>
+  <p class="sub">既存企業のバイブコーディング導入のためのフレームワーク — Vibe Adoption Framework（VAF）の紹介</p>
+  <p class="note">vaf.roboco.io · github.com/roboco-io/vibe-adoption-framework</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="eyebrow">Why now</p>
+  <h2>ツールはすでに来ている。<br>差を生むのは<em>導入の体系</em>。</h2>
+  <div class="cols c2">
+    <div class="card top-blue">
+      <h3>エージェントを組織体系に統合した企業</h3>
+      <p>高水準の開発人材を低コストで大規模に確保したのと同じ効果。リードタイム・品質・コスト構造が変わる。</p>
+    </div>
+    <div class="card top-orange">
+      <h3>個人の実験の水準にとどまる企業</h3>
+      <p>ツールを使いながらも組織レベルの成果へ結びつけられない。「AIを使ったのに何も変わらない」という結論に帰結。</p>
+    </div>
+  </div>
+  <p class="sub">コーディングエージェントは、すでに熟練開発者が担っていた相当数の作業を代替する。その差は広がり続けている。</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="eyebrow">大前提</p>
+  <h2>バイブコーディングは<em>ソフトウェア開発</em>である</h2>
+  <p class="quote">変わるのは原則ではなく経済性である。</p>
+  <ul class="big">
+    <li><span class="n">01</span><p>明確な要求、良いアーキテクチャ、レビュー、テスト、文書化 — 人の開発を成功させてきた原則が、エージェントの開発も成功させる。</p></li>
+    <li><span class="n">02</span><p>かつて高価だったもの（綿密なレビュー、徹底したテスト、レガシー全体の分析）を、エージェントが低コストで常時遂行する。</p></li>
+    <li><span class="n">03</span><p>問いは「AIのために何を変えるか」ではなく、<strong>「本来やるべきだったことを、エージェントとどう実現するか」</strong>。</p></li>
+  </ul>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="eyebrow">Foundational Principles</p>
+  <h2>すべての観点を貫く<em>三つの原理</em></h2>
+  <div class="cols c3">
+    <div class="card top-blue">
+      <span class="k">原理 1</span>
+      <h3>エージェントは人材レバレッジである</h3>
+      <p>有能な新人に与えるもの — アクセス権限、システムの説明、ルール、明確な指示、レビュー — をエージェントにも与えよ。失敗する組織はエージェントを責め、成功する組織はオンボーディングの体系を作る。</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">原理 2</span>
+      <h3>オーナーシップは人が持つ</h3>
+      <p>「エージェントが作ったから私は知らない」を許容しない。作成の主体が変わっても、説明の義務は移らない。誰に問われてもいつでも答えられる状態を保つ。</p>
+    </div>
+    <div class="card top-orange">
+      <span class="k">原理 3</span>
+      <h3>認知負債は管理対象である</h3>
+      <p>人の理解と実際のシステムのギャップ＝認知負債。技術負債と同じく、除去ではなくトレードオフ管理の対象。どこに深い理解を維持するかは組織が決める。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="eyebrow">Named Concepts</p>
+  <h2>VAFの<em>名前を持つ概念</em>二つ</h2>
+  <div class="cols c2">
+    <div class="card top-blue">
+      <h3>ハーネスエンジニアリング</h3>
+      <p>人が担っていたレビューとガードレールを、AIが代わりに遂行するよう体系化する工学。ルールファイル・自動レビュー・フック・検証パイプラインの組み合わせ。よくできたハーネスは、人のレビューを<strong>より高い抽象度</strong>（意図・設計・トレードオフ）へ引き上げる。</p>
+    </div>
+    <div class="card top-orange">
+      <h3>嗜好／非嗜好の区分</h3>
+      <p><strong>非嗜好</strong>（セキュリティ・ガードレール・コーディング規約）はリポジトリとともに管理され、全員に強制される。<strong>嗜好</strong>（文書化の詳細度など）のみ、ごく限定的に裁量を許容。リポジトリに組み込まれたルールは、エージェントにとって破れない環境になる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="eyebrow">Framework</p>
+  <h2>三つの軸</h2>
+  <div class="cols c3">
+    <div class="card top-blue">
+      <span class="k">軸 1 · Perspective</span>
+      <h3>観点6 · ケイパビリティ26</h3>
+      <p>「組織は何を備えるべきか？」診断と改善計画の単位。</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">軸 2 · Domain</span>
+      <h3>変革領域4</h3>
+      <p>「実際に何が変わるのか？」各領域のAsIs → ToBe。</p>
+    </div>
+    <div class="card top-blue">
+      <span class="k">軸 3 · Journey</span>
+      <h3>導入ジャーニー4段階</h3>
+      <p>「どの順序で進めるのか？」準備→診断→パイロット→変革の反復サイクル。</p>
+    </div>
+  </div>
+  <p class="sub">ジャーニーに沿って進みながらケイパビリティを備え、そのケイパビリティで変革領域のAsIsをToBeへ変える。</p>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="eyebrow">Value Chain</p>
+  <h2>ケイパビリティからアウトカムまで</h2>
+  <div class="flow">
+    <div class="step"><span class="k">CAPABILITY</span><strong>エージェントのケイパビリティ</strong><span>コーディングエージェントの登場</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">ADOPTION</span><strong>導入</strong><span>6つの観点のケイパビリティ確保</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">TRANSFORMATION</span><strong>変革</strong><span>4領域のAsIs → ToBe</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">OUTCOME</span><strong>ビジネスアウトカム</strong><span>リードタイム · 品質 · コスト · 知識</span></div>
+  </div>
+  <div class="cols c2">
+    <div class="card"><h3>罠 1</h3><p>ツール導入を成果と取り違える — ライセンス購入はチェーンの最初のマスにすぎない。</p></div>
+    <div class="card"><h3>罠 2</h3><p>変革なしに成果を直ちに求める — 「AIを使ったのに何も変わらない」という誤った結論。</p></div>
+  </div>
+  <p class="note">経営陣への問い: 今このチェーンのどのマスがボトルネックか？ それが投資の優先順位である。</p>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="eyebrow">Transformation Domains</p>
+  <h2>変革が起こる<em>四つの領域</em></h2>
+  <table>
+    <tr><th>Domain</th><th>AsIs</th><th>ToBe</th></tr>
+    <tr><td>コード生産</td><td>人が書く、採用がすなわちキャパシティ計画</td><td>エージェントが書く、人は意図の指示と承認</td></tr>
+    <tr><td>品質保証</td><td>人によるレビュー、納期圧力で真っ先に犠牲に</td><td>ハーネスが自動強制、人は設計判断に集中</td></tr>
+    <tr><td>知識</td><td>暗黙知・口頭伝承、退職＝知識損失</td><td>エージェントが常時活用する文書化された知識基盤</td></tr>
+    <tr><td>組織と役割</td><td>作成者中心のチーム、コード量で評価</td><td>オーナー・オーケストレーター中心のチーム</td></tr>
+  </table>
+  <p class="note">最も遅く、最も難しい変革は組織と役割 — 明示的に扱わなければ「ツールは買ったのに誰も使わない」状態になる</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="eyebrow">Perspectives</p>
+  <h2>観点6つ — <em>ケイパビリティの地図</em></h2>
+  <div class="cols c3">
+    <div class="card top-blue"><span class="k">P1 · 人と組織</span><h3>Strategy</h3><p>なぜ、何を得るのか — 導入戦略、ROI測定、SDLCギャップ分析、優先順位</p></div>
+    <div class="card top-blue"><span class="k">P2 · 人と組織</span><h3>People &amp; Ownership</h3><p>人の役割 — オーナーシップ体系、認知負債管理、役割転換、ケイパビリティ開発、文化</p></div>
+    <div class="card top-blue"><span class="k">P3 · 人と組織</span><h3>Governance &amp; Guardrails</h3><p>何を強制するのか — 嗜好／非嗜好、ポリシーのリポジトリ強制、セキュリティ、コスト</p></div>
+    <div class="card top-orange"><span class="k">P4 · エージェント技術</span><h3>Agent Environment</h3><p>エージェントは働けるか — アクセス経路、ツール接続、実行環境、権限</p></div>
+    <div class="card top-orange"><span class="k">P5 · エージェント技術</span><h3>Knowledge</h3><p>エージェントは知っているか — 知識基盤、リポジトリ文書化、懸案の文書化、コンテキスト供給</p></div>
+    <div class="card top-orange"><span class="k">P6 · エージェント技術</span><h3>Harness Engineering</h3><p>品質を誰が守るのか — ルールファイル、スキル・フック、自動レビュー、検証パイプライン、改善ループ</p></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="eyebrow">Perspectives in one line</p>
+  <h2>観点が投げかける<em>六つの問い</em></h2>
+  <ul class="big">
+    <li><span class="n">P1</span><p><strong>なぜ導入し、何を得るのか？</strong> — この観点が脆弱なら、残る五つの努力は個人技へと散らばる。</p></li>
+    <li><span class="n">P2</span><p><strong>人の役割は何か？</strong> — 人の価値は、何を書いたかではなく、何に責任を負うか。</p></li>
+    <li><span class="n">P3</span><p><strong>何を強制するのか？</strong> — エージェントにはルールを破る意志がない。ルールが環境になければ、その存在を知らないだけ。</p></li>
+    <li><span class="n">P4</span><p><strong>エージェントは働けるか？</strong> — アカウントのない新人に成果は期待できない。</p></li>
+    <li><span class="n">P5</span><p><strong>エージェントは知っているか？</strong> — エージェントの成果は、アクセスできる知識の質に比例する。</p></li>
+    <li><span class="n">P6</span><p><strong>品質を誰が守るのか？</strong> — ハーネスのない組織では、エージェントの速度はそのまま欠陥の速度。</p></li>
+  </ul>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <p class="eyebrow">Adoption Journey</p>
+  <h2>導入ジャーニー — <em>反復する4段階</em></h2>
+  <div class="flow">
+    <div class="step"><span class="k">J1</span><strong>準備 Prepare</strong><span>アクセス経路 · ツール接続 · 実行環境 · 権限</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J2</span><strong>診断 Assess</strong><span>懸案インタビュー · リポジトリ分析 · ギャップ整理 · ベースライン</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J3</span><strong>パイロット Pilot</strong><span>ハーネス構築 · 開発転換 · 振り返り · プレイブック</span></div>
+    <div class="arr">→</div>
+    <div class="step"><span class="k">J4</span><strong>変革 Transform</strong><span>全社展開 · 制度化 · 指標観測 · 次のサイクル</span></div>
+  </div>
+  <p class="quote">VAFは診断より環境準備を先に置く。<br>診断・分析・文書化の遂行主体がエージェントだからである。</p>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <p class="eyebrow">Journey Principles</p>
+  <h2>ジャーニー運営の<em>四つの原則</em></h2>
+  <ul class="big">
+    <li><span class="n">01</span><p><strong>小さく完走せよ</strong> — 狭く最後まで行く方が、広く手を付けて止まるより良い。完走の経験が拡散の燃料になる。</p></li>
+    <li><span class="n">02</span><p><strong>段階を飛ばすな</strong> — 準備なき診断は人の速度に、診断なきパイロットは文脈なきコードに、パイロットなき変革は検証されていない強要になる。</p></li>
+    <li><span class="n">03</span><p><strong>すべての段階で深層インタビューで確認せよ</strong> — 文書が現実とずれたまま次の段階へ進むことが、最も高くつく失敗。</p></li>
+    <li><span class="n">04</span><p><strong>指標はサイクルごとに更新せよ</strong> — 経営陣の信頼は指標の連続性から生まれる。</p></li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <p class="eyebrow">Anti-patterns</p>
+  <h2>導入を座礁させる<em>よくある失敗</em></h2>
+  <div class="cols c2">
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>目的なきツールの配布</h3><p>6か月後、「活用率が低い」という報告とともに勢いが尽きる。</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>ベースラインなき開始</h3><p>成果を証明できず、予算更新の時点で座礁。</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>セキュリティレビューを最後に</h3><p>返ってくる答えは全面遮断。セキュリティは設計参加者に。</p></div>
+    <div class="card"><span class="anti-chip">ANTI-PATTERN</span><h3>事故後の「エージェント禁止」</h3><p>原因はエージェントではなく、ハーネスの空白である。</p></div>
+  </div>
+  <p class="note">VAF本文には26のケイパビリティごとにアンチパターンが明示されている</p>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <p class="eyebrow">Execution Kit</p>
+  <h2>すぐ使える<em>実行キット</em>（付録）</h2>
+  <div class="cols c4">
+    <div class="card top-blue"><h3>成熟度アセスメント</h3><p>26ケイパビリティ × 3段階（不在／部分／定着）の判別質問</p></div>
+    <div class="card top-blue"><h3>深層インタビュー質問票</h3><p>ビジネス懸案 · IT懸案 · SDLC · 知識管理の4領域</p></div>
+    <div class="card top-blue"><h3>ワークショップガイド</h3><p>診断ワークショップ（半日）· パイロット着手ワークショップ（1日）</p></div>
+    <div class="card top-blue"><h3>用語集</h3><p>フレームワーク全用語の英語併記</p></div>
+  </div>
+  <p class="sub">診断段階のアセスメントとインタビューから、パイロット着手まで — フレームワークを読むことから、実行することへ。</p>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <p class="eyebrow">Expected Outcomes</p>
+  <h2>導入が完成すると<em>何が変わるのか</em></h2>
+  <div class="cols c2">
+    <div class="card top-blue"><h3>リードタイムの短縮</h3><p>機能開発・バグ修正・レガシー分析が並列で、常時進行。</p></div>
+    <div class="card top-blue"><h3>品質の一貫性</h3><p>レビュー・検証がハーネスへ移り、例外なく強制。</p></div>
+    <div class="card top-blue"><h3>コスト構造の変化</h3><p>人員規模に比例していた開発キャパシティの限界が緩和。</p></div>
+    <div class="card top-blue"><h3>知識の資産化</h3><p>暗黙知が文書化された知識基盤へ。個人依存を解消。</p></div>
+  </div>
+  <p class="quote">人がコードを手で書かない状態がデフォルトになり、<br>オーナーシップと認知負債管理の体系がそれを支える。</p>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <p class="eyebrow">Vibe Adoption Framework</p>
+  <h1>読み、診断し、<em>始めよう。</em></h1>
+  <div class="cols c3" style="margin-top:4vh">
+    <div class="card"><h3>📄 フレームワーク全文</h3><p>vaf.roboco.io<br>（EN · 한국어 · 日本語）</p></div>
+    <div class="card"><h3>💻 GitHub</h3><p>github.com/roboco-io/<br>vibe-adoption-framework</p></div>
+    <div class="card"><h3>🤝 導入コンサルティング</h3><p>ロボコ — roboco.io</p></div>
+  </div>
+  <p class="note">© Roboco · Vibe Adoption Framework</p>
+</section>
+
+</div>
+
+<div class="hud">
+  <button id="prev" aria-label="前のスライド">←</button>
+  <span id="counter">1 / 16</span>
+  <button id="next" aria-label="次のスライド">→</button>
+  <button id="fs" aria-label="フルスクリーン切り替え" title="フルスクリーン (F)">⛶</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+let cur = 0;
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+  document.getElementById('counter').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+document.getElementById('next').addEventListener('click', () => show(cur + 1));
+document.getElementById('prev').addEventListener('click', () => show(cur - 1));
+function toggleFullscreen() {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen();
+}
+document.getElementById('fs').addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange', () => {
+  document.getElementById('fs').textContent = document.fullscreenElement ? '⛶✕' : '⛶';
+});
+document.addEventListener('keydown', e => {
+  if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+  if (e.key === 'Home') show(0);
+  if (e.key === 'End') show(slides.length - 1);
+  if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+});
+let tx = null;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
+document.addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 60) show(cur + (dx < 0 ? 1 : -1));
+  tx = null;
+}, {passive: true});
+const h = parseInt(location.hash.slice(1), 10);
+if (h >= 1 && h <= slides.length) show(h - 1);
+</script>
+</body>
+</html>
