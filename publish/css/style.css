@@ -224,3 +224,48 @@ td:first-child { font-weight: 600; white-space: nowrap; }
   .rail { grid-template-columns: 1fr; gap: 8px; }
   .hero { padding: 60px 0 44px; }
 }
+
+@media (max-width: 760px) {
+  html { scroll-padding-top: 16px; }
+  .wrap { padding: 0 18px; }
+
+  /* header: 고정 높이·sticky 해제, 내비게이션 줄바꿈 허용 */
+  .site-header { position: static; }
+  .site-header .wrap {
+    height: auto; flex-wrap: wrap;
+    padding-top: 12px; padding-bottom: 12px; gap: 8px 16px;
+  }
+  .brand .by { display: none; }
+  .site-nav { flex-wrap: wrap; gap: 8px 16px; font-size: 13.5px; }
+
+  body { font-size: 16px; }
+  .hero { padding: 44px 0 36px; }
+  .hero .lede { font-size: 16.5px; margin-top: 20px; }
+  .hero .meta { margin-top: 24px; }
+
+  article section + section { margin-top: 60px; }
+  article h2 { font-size: 25px; }
+  article h3 { font-size: 19px; margin-top: 38px; }
+
+  /* 표: 첫 열·헤더의 nowrap 해제로 가로 스크롤 최소화 */
+  table { font-size: 14px; }
+  th, td { padding: 8px 10px; }
+  th, td:first-child { white-space: normal; }
+
+  /* 플로우: 세로 스택 + 화살표 회전 */
+  .flow { flex-direction: column; gap: 6px; }
+  .flow .step { flex: 1 1 auto; }
+  .flow .arr { transform: rotate(90deg); align-self: flex-start; margin-left: 18px; }
+
+  .shift .row { grid-template-columns: 64px 1fr; }
+  .shift .row > div:last-child { padding: 10px 12px; font-size: 14.5px; }
+  .anti { font-size: 14.5px; padding: 10px 14px; }
+  .principle { padding: 16px 16px; }
+  .rail .chips a { font-size: 13.5px; padding: 6px 11px; }
+}
+
+@media (max-width: 400px) {
+  .lang-switch { margin-left: 0; }
+  .site-nav { gap: 6px 12px; }
+  article h2 { font-size: 23px; }
+}
