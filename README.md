@@ -1,29 +1,32 @@
 # Vibe Adoption Framework (VAF)
 
-기존 기업이 소프트웨어 개발을 에이전트 중심으로 전환(바이브 코딩 도입)하는 여정을 구조화한 프레임워크입니다. 로보코의 바이브 코딩·AX 컨설팅 경험에서 도출한 베스트 프랙티스를 담고 있습니다.
+A framework that structures the journey of established enterprises transitioning their software development to an agent-centric model (vibe coding adoption). It distills best practices from Roboco's vibe coding and AX consulting experience.
 
-## 문서
+## Documentation
 
-**웹사이트**: https://vaf.roboco.io (English) · [/ko/](https://vaf.roboco.io/ko/) (한국어) · [/ja/](https://vaf.roboco.io/ja/) (日本語)
+**Website**: https://vaf.roboco.io (English) · [/ko/](https://vaf.roboco.io/ko/) (한국어) · [/ja/](https://vaf.roboco.io/ja/) (日本語)
 
-| 문서 | 상태 |
+**Slides**: [/slides/en/](https://vaf.roboco.io/slides/en/) (English) · [/slides/ko/](https://vaf.roboco.io/slides/ko/) (한국어) · [/slides/ja/](https://vaf.roboco.io/slides/ja/) (日本語)
+
+| Document | Status |
 |---|---|
-| [VAF-en.md](VAF-en.md) — English (default) | 초안 완성 |
-| [VAF-ko.md](VAF-ko.md) — 한국어 | 초안 완성 |
-| [VAF-ja.md](VAF-ja.md) — 日本語 | 초안 완성 |
+| [VAF-en.md](VAF-en.md) — English (default) | Draft complete |
+| [VAF-ko.md](VAF-ko.md) — 한국어 | Draft complete |
+| [VAF-ja.md](VAF-ja.md) — 日本語 | Draft complete |
 
-## 프레임워크 한눈에 보기
+## Framework at a Glance
 
-- **관통 원리 3**: 에이전트=인력 레버리지 · 오너십은 사람 · 인지부채는 관리 대상
-- **관점(Perspective) 6**: Strategy · People & Ownership · Governance & Guardrails · Agent Environment · Knowledge · Harness Engineering (역량 항목 26개)
-- **전환 영역(Domain) 4**: 코드 생산 · 품질 보증 · 지식 · 조직과 역할
-- **도입 여정 4단계**: 준비(Prepare) → 진단(Assess) → 파일럿(Pilot) → 전환(Transform)
+- **3 Cross-cutting Principles**: Agents are workforce leverage · Ownership stays with people · Cognitive debt must be managed
+- **6 Perspectives**: Strategy · People & Ownership · Governance & Guardrails · Agent Environment · Knowledge · Harness Engineering (26 capability items)
+- **4 Transformation Domains**: Code Production · Quality Assurance · Knowledge · Organization & Roles
+- **4-Stage Adoption Journey**: Prepare → Assess → Pilot → Transform
 
-## 프로젝트 자료
+## Project Resources
 
-- [research/aws-caf-overview.md](research/aws-caf-overview.md) — AWS Cloud Adoption Framework 3.0 조사 자료
-- [docs/superpowers/specs/](docs/superpowers/specs/) — 설계 문서
+- [publish/](publish/) — Website and presentation slides deployed to GitHub Pages
+- [research/aws-caf-overview.md](research/aws-caf-overview.md) — AWS Cloud Adoption Framework 3.0 research notes
+- [docs/superpowers/specs/](docs/superpowers/specs/) — Design documents
 
-## 만든 곳
+## Created By
 
-[로보코](https://roboco.io) — 바이브 코딩 도입 컨설팅
+[Roboco](https://roboco.io) — Vibe coding adoption consulting
